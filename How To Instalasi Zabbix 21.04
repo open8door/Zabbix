@@ -1,1 +1,56 @@
+Zabbix is open source software that can be used to monitor the network, and the status of various network services, servers, and other network hardware.
+Software created by Alexei Vladishev. With zabbix, users can easily find out server status, network conditions and get notifications in case of interference, 
+zabbix also supports polling and trapping.
 
+Version 5.0 LTS
+
+==== Instalasi Zabbix repository / Download Source ====
+
+  # sudo su
+  # wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb
+  # dpkg -i zabbix-release_5.0-1+focal_all.deb
+  # apt update
+
+==== Instalasi Zabbix Server, Frontend, Agent ====
+
+  # apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
+
+==== Instalasi Mysql-Server ====
+
+  # apt install mysql-server -y
+  
+==== Create Database & User Zabbix ====
+
+  # mysql -uroot -p
+
+  mysql> create database zabbix character set utf8 collate utf8_bin;
+  mysql> create user zabbix@localhost identified by 'password';
+  mysql> grant all privileges on zabbix.* to zabbix@localhost;
+  mysql> quit;
+  
+==== On Zabbix Server Host Import Initial Schema And Data. You Will Be Prompted To Enter Your Newly Created Password ====
+
+  # zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p zabbix
+
+==== Edit File /etc/zabbix/zabbix_server.conf ====
+
+  # nano /etc/zabbix/zabbix_server.conf
+  # search word DBPassword = password
+
+==== Edit File /etc/zabbix/apache.conf ====
+
+  # nano /etc/zabbix/apache.conf
+  # Remove # In php_value date.timezone Asia/Jakarta
+
+==== Start Zabbix Server And Agent ====
+
+  # systemctl restart zabbix-server zabbix-agent apache2
+  # systemctl enable zabbix-server zabbix-agent apache2
+  
+==== Running Zabbix ====
+
+  # http://ip_address/zabbix
+
+==================================================================================================================================================================
+
+THANK YOU VERY MUCH :)
